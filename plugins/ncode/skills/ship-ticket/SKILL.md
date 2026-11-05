@@ -70,8 +70,8 @@ Run the project's full gate once, in its order (typically lint, typecheck, test,
 
 Once the gate is green, have the diff against the merge base (`git diff origin/<default>...HEAD`) reviewed with the issue as the spec. The reviewer is never the session that wrote the code: it has to read the change as a stranger would.
 
-- Prefer the `pr-reviewer` agent when the plugin provides it. Brief it with the repo path, the branch or PR, the issue number, the decisions taken for the ticket, and, from the second round on, what earlier rounds found and how each was fixed. It returns MERGE or FIX with blocking findings.
-- Without it (for example when only the skills were installed, not the plugin), use the review skill from *Companion skills* the same way, inside a fresh subagent.
+- Prefer the `pr-reviewer` agent when the plugin provides it. Brief it with the repo path, the branch (the PR does not exist yet at this step), the issue number, the decisions taken for the ticket, and, from the second round on, what earlier rounds found and how each was fixed. It returns MERGE or FIX with blocking findings.
+- Without it (for example when only the skills were installed, not the plugin), use the review skill from *Companion skills* the same way. Anything that would run in this session (the host's `/code-review`, a plain brief) goes to a fresh subagent; mattpocock's `code-review` already runs its own.
 - Fix every blocking finding, each with a test that would have caught it, then rerun the gate and review again with a new agent. Never reuse the reviewer from the previous round; it has already seen the code once.
 - Findings you decide not to fix go into the PR body with the reason. Non-blocking notes that are real work become new issues.
 

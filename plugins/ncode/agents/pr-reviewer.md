@@ -28,9 +28,14 @@ and what earlier review rounds found and how it was fixed. Whatever is missing, 
   `git symbolic-ref --short refs/remotes/origin/HEAD`.
 - The PR and the issue: `gh pr view <N>`, `gh pr list --head <branch>`, `gh issue view <N>`
   (the PR body's `Closes #N` names the issue).
-- The head you review: the PR's `headRefName` and `headRefOid` (`gh pr view <N> --json
-  headRefName,headRefOid`). Use the local `HEAD` only when `git rev-parse HEAD` equals that oid;
-  otherwise you are in another checkout and must review the PR's own head, not what is checked out.
+- The head you review, one commit called `<head>` below, in this order:
+  - a PR: its `headRefOid` (`gh pr view <N> --json headRefName,headRefOid`); for a PR from a
+    fork, `git fetch origin pull/<N>/head` first so the commit is local;
+  - else the branch the brief names: `git rev-parse <branch>`, or `origin/<branch>` when it
+    exists only on the remote;
+  - else the current branch (`git rev-parse HEAD`), and say so in your answer.
+- Whether you are at the head: `git rev-parse HEAD` equals `<head>` and `git status --porcelain`
+  shows no changes to tracked files. If not, you are in another checkout or a dirty tree.
 - The commits: `git log origin/<default>..<head>`.
 
 If there is no issue, the PR body is the spec. If neither says what the change should do, say so
@@ -38,10 +43,10 @@ in your answer and review against the project's rules only.
 
 ## What to read
 
-1. The diff: `git fetch -q origin`, then `git diff origin/<default>...HEAD` when the branch is
-   checked out at the PR's head, else `git diff origin/<default>...origin/<branch>` (or
-   `gh pr diff <N>`). Read files at that head with `git show <head>:<path>`, not from the working
-   tree. An empty diff means you are looking at the wrong head: stop and say so, never MERGE.
+1. The diff: `git fetch -q origin`, then `git diff origin/<default>...<head>` (for a PR,
+   `gh pr diff <N>` shows the same). Read changed files at the head with
+   `git show <head>:<path>` unless you are at the head. An empty diff means you are looking at
+   the wrong head: stop and say so, never MERGE.
 2. The spec: the issue body and acceptance criteria, its comments, its parent issue, and any doc
    it links (a spec, user stories, a design doc).
 3. The project's rules: `CLAUDE.md` and `AGENTS.md` at the root and in the folders the diff
@@ -56,8 +61,8 @@ in your answer and review against the project's rules only.
 
 Find the test command the project uses (its instruction file first, then `package.json`,
 `Makefile`, `pyproject.toml` or the like) and run the tests the diff adds or touches. A test that
-fails is a blocking finding. Tests run on the working tree, so run them only when it is at the
-PR's head; otherwise list them under "Not checked".
+fails is a blocking finding. Tests run on the working tree, so run them only when you are at the
+head; otherwise list them under "Not checked".
 
 ## What to look for
 
