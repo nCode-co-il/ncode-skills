@@ -1,7 +1,7 @@
 {
   "name": "ncode",
   "description": "The skills nCode (אין קוד) teaches in its courses, for building client projects with Claude Code: discovery, workday estimates, a branded Hebrew RTL proposal PDF, a ticket-to-PR workflow on GitHub, and a read-only PR reviewer agent.",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "author": {
     "name": "nCode (אין קוד)",
     "url": "https://ncode.co.il"
