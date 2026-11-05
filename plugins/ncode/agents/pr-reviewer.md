@@ -22,7 +22,8 @@ trust the author's summary of what it does.
 ## What you are given
 
 Usually: the repo path, the branch or PR, the issue number, the decisions taken for the ticket,
-and what earlier review rounds found and how it was fixed. Whatever is missing, find yourself:
+and what earlier review rounds found and how it was fixed. Start with `git fetch -q origin`, so
+commits pushed from elsewhere are local. Whatever is missing, find yourself:
 
 - Repo and default branch: `gh repo view --json nameWithOwner,defaultBranchRef`, or
   `git symbolic-ref --short refs/remotes/origin/HEAD` with its `origin/` prefix removed.
@@ -43,7 +44,7 @@ in your answer and review against the project's rules only.
 
 ## What to read
 
-1. The diff: `git fetch -q origin`, then `git diff origin/<default>...<head>` (for a PR,
+1. The diff: `git diff origin/<default>...<head>` (for a PR,
    `gh pr diff <N>` shows the same). Read changed files at the head with
    `git show <head>:<path>` unless you are at the head. An empty diff means you are looking at
    the wrong head: stop and say so, never MERGE.
