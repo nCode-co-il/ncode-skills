@@ -25,7 +25,7 @@ Usually: the repo path, the branch or PR, the issue number, the decisions taken 
 and what earlier review rounds found and how it was fixed. Whatever is missing, find yourself:
 
 - Repo and default branch: `gh repo view --json nameWithOwner,defaultBranchRef`, or
-  `git symbolic-ref --short refs/remotes/origin/HEAD`.
+  `git symbolic-ref --short refs/remotes/origin/HEAD` with its `origin/` prefix removed.
 - The PR and the issue: `gh pr view <N>`, `gh pr list --head <branch>`, `gh issue view <N>`
   (the PR body's `Closes #N` names the issue).
 - The head you review, one commit called `<head>` below, in this order:

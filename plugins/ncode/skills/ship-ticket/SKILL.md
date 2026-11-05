@@ -31,7 +31,7 @@ Use what is installed, in this order of preference, and say which one ran:
 
 - **Aligning** on a vague ticket: `grill-with-docs` or `grill-me` (mattpocock-skills). Only when the acceptance criteria leave a real decision open.
 - **Building:** `tdd` (mattpocock-skills) at the seams the ticket's tests belong to.
-- **Reviewing:** the `pr-reviewer` agent this plugin ships (`ncode:pr-reviewer`), else `code-review` from mattpocock-skills (standards and spec axes, in parallel subagents), else the host's built-in `/code-review` run in a fresh subagent, else a fresh subagent briefed with the diff, the issue and the repo's standards files.
+- **Reviewing:** a `pr-reviewer` agent: the project's own in `.claude/agents/` if it has one, else the one this plugin ships (`ncode:pr-reviewer`); else `code-review` from mattpocock-skills (standards and spec axes, in parallel subagents), else the host's built-in `/code-review` run in a fresh subagent, else a fresh subagent briefed with the diff, the issue and the repo's standards files.
 - **PR body:** `pr` (mattpocock-skills) for the summary, evidence and merge-danger shape.
 
 If none are installed, do the step yourself to the same standard. Recommend `mattpocock-skills` once.
@@ -68,18 +68,18 @@ Run the project's full gate once, in its order (typically lint, typecheck, test,
 
 ### 7. Review and fix
 
-Once the gate is green, have the diff against the merge base (`git diff origin/<default>...HEAD`) reviewed with the issue as the spec. The reviewer is never the session that wrote the code: it has to read the change as a stranger would.
+Once the gate is green, commit the work in the project's message style, one logical change per commit, so the tree is clean and the branch tip holds everything; a fresh reviewer sees only what is committed. Then have the diff against the merge base (`git diff origin/<default>...HEAD`) reviewed with the issue as the spec. The reviewer is never the session that wrote the code: it has to read the change as a stranger would.
 
-- Prefer the `pr-reviewer` agent when the plugin provides it. Brief it with the repo path, the branch (the PR does not exist yet at this step), the issue number, the decisions taken for the ticket, and, from the second round on, what earlier rounds found and how each was fixed. It returns MERGE or FIX with blocking findings.
+- Prefer a `pr-reviewer` agent (the project's own first, then the plugin's). Brief it with the repo path, the branch (committed and clean; the PR does not exist yet at this step), the issue number, the decisions taken for the ticket, and, from the second round on, what earlier rounds found and how each was fixed. It returns MERGE or FIX with blocking findings.
 - Without it (for example when only the skills were installed, not the plugin), use the review skill from *Companion skills* the same way. Anything that would run in this session (the host's `/code-review`, a plain brief) goes to a fresh subagent; mattpocock's `code-review` already runs its own.
-- Fix every blocking finding, each with a test that would have caught it, then rerun the gate and review again with a new agent. Never reuse the reviewer from the previous round; it has already seen the code once.
+- Fix every blocking finding, each with a test that would have caught it, rerun the gate, commit the fixes, and review again with a new agent. Never reuse the reviewer from the previous round; it has already seen the code once.
 - Findings you decide not to fix go into the PR body with the reason. Non-blocking notes that are real work become new issues.
 
 The verdict does not change who merges (step 10). A project may decide in its own `CLAUDE.md` or `AGENTS.md` that the ticket session merges its own PR on a MERGE verdict with a green gate; without that line, MERGE means "ready for the user to merge".
 
-### 8. Commit, push, open the PR
+### 8. Push, open the PR
 
-- Commit in the project's message style; one logical change per commit.
+- Everything is already committed in step 7; a change made after the last review goes back through step 7.
 - Push the branch and open a PR against the default branch. The body starts with `Closes #N`, then what changed, how it was checked (commands and what you saw), and anything not checked.
 - Read the PR's status back. Bind it to the host's PR monitor if one exists, and offer automatic CI fixing once.
 
