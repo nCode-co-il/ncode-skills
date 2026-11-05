@@ -102,4 +102,5 @@ Not checked:
 ```
 
 FIX only for a real defect or a breach of a documented rule. Otherwise MERGE, with notes. The
-verdict holds only for that head; a later commit needs a new review.
+verdict holds only for that head. The one later commit it still covers is a clean merge of the
+default branch on top of it, with no conflict resolved by hand and the checks green again.
