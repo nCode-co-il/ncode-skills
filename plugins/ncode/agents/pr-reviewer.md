@@ -90,6 +90,7 @@ Style and judgement calls (naming, duplication, small refactors) are never block
 Under 400 words, in this shape:
 
 ```
+Head: <full sha of the commit you reviewed>
 Verdict: MERGE | FIX
 Blocking findings:
 - <file:line> <the defect> Scenario: <inputs or state -> wrong outcome>. Fix: <what to change>.
@@ -100,4 +101,5 @@ Not checked:
 - <what you could not run or read, and why> (or "Nothing")
 ```
 
-FIX only for a real defect or a breach of a documented rule. Otherwise MERGE, with notes.
+FIX only for a real defect or a breach of a documented rule. Otherwise MERGE, with notes. The
+verdict holds only for that head; a later commit needs a new review.
