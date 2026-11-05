@@ -13,7 +13,9 @@ Tickets are worked with the `ship-ticket` skill.
 - Blocked: [command, or "Status Blocked and a comment naming who and what"].
 - Branch: `issue-<N>-<slug>` from `[main]`, one worktree per ticket when working in parallel.
 - Checks before a PR: `[lint]`, `[typecheck]`, `[test]`, `[build]`.
-- PR: body starts with `Closes #N`. [Who merges: "the user" or "the orchestrator session"].
+- PR: body starts with `Closes #N`.
+- Review: [a fresh `pr-reviewer` agent, or the review skill in a fresh subagent], a new one after every round of fixes.
+- Merge: [who merges: "the user", "the orchestrator session", or "the ticket session, on a MERGE verdict for the PR's current head (or that head plus a clean merge of the default branch) with a green gate"].
 - After merge: [refresh command, or "move newly unblocked tickets to Ready"].
 ```
 
