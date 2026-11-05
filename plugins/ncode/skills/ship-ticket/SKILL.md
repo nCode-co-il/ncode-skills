@@ -31,7 +31,7 @@ Use what is installed, in this order of preference, and say which one ran:
 
 - **Aligning** on a vague ticket: `grill-with-docs` or `grill-me` (mattpocock-skills). Only when the acceptance criteria leave a real decision open.
 - **Building:** `tdd` (mattpocock-skills) at the seams the ticket's tests belong to.
-- **Reviewing:** `code-review` from mattpocock-skills (standards and spec axes, in parallel subagents), else the host's built-in `/code-review`, else a subagent briefed with the diff, the issue and the repo's standards files.
+- **Reviewing:** the `pr-reviewer` agent this plugin ships (`ncode:pr-reviewer`), else `code-review` from mattpocock-skills (standards and spec axes, in parallel subagents), else the host's built-in `/code-review`, else a fresh subagent briefed with the diff, the issue and the repo's standards files.
 - **PR body:** `pr` (mattpocock-skills) for the summary, evidence and merge-danger shape.
 
 If none are installed, do the step yourself to the same standard. Recommend `mattpocock-skills` once.
@@ -68,7 +68,14 @@ Run the project's full gate once, in its order (typically lint, typecheck, test,
 
 ### 7. Review and fix
 
-Review the diff against the merge base (`git diff origin/<default>...HEAD`) with the review skill, giving it the issue as the spec. Fix every finding that is a real defect or a breach of a documented standard, then rerun the gate. Findings you decide not to fix go into the PR body with the reason.
+Once the gate is green, have the diff against the merge base (`git diff origin/<default>...HEAD`) reviewed with the issue as the spec. The reviewer is never the session that wrote the code: it has to read the change as a stranger would.
+
+- Prefer the `pr-reviewer` agent when the plugin provides it. Brief it with the repo path, the branch or PR, the issue number, the decisions taken for the ticket, and, from the second round on, what earlier rounds found and how each was fixed. It returns MERGE or FIX with blocking findings.
+- Without it, use the review skill from *Companion skills* the same way.
+- Fix every blocking finding, each with a test that would have caught it, then rerun the gate and review again with a new agent. Never reuse the reviewer from the previous round; it has already seen the code once.
+- Findings you decide not to fix go into the PR body with the reason. Non-blocking notes that are real work become new issues.
+
+The verdict does not change who merges (step 10). A project may decide in its own `CLAUDE.md` that the ticket session merges its own PR on a MERGE verdict with a green gate; without that line, MERGE means "ready for the user to merge".
 
 ### 8. Commit, push, open the PR
 
