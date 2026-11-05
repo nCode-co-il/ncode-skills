@@ -1,6 +1,6 @@
 ---
 name: pr-reviewer
-description: Pre-merge review of one ticket's branch or pull request, in a fresh context. Reads the diff against the default branch with the issue as the spec and the project's own rules, hunts for real defects, and returns MERGE or FIX with the blocking findings. Use for every ticket PR once the project's checks are green, and again, with a new agent, after each round of fixes. Read-only; never edits, commits, pushes or merges.
+description: Pre-merge review of one ticket's committed branch or pull request, in a fresh context. Reads the diff against the default branch with the issue as the spec and the project's own rules, hunts for real defects, and returns MERGE or FIX with the blocking findings. Use for every ticket once its work is committed and the project's checks are green, before or after the PR opens, and again, with a new agent, after each round of fixes. Read-only; never edits, commits, pushes or merges.
 tools: Bash, Read, Grep, Glob
 ---
 
